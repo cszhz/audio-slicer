@@ -142,6 +142,18 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(4, QFormLayout.FieldRole, self.lineEditMaxSilence)
 
 
+
+        self.label_66 = QLabel(self.groupBox_2)
+        self.label_66.setObjectName(u"label_66")
+
+        self.formLayout.setWidget(5, QFormLayout.LabelRole, self.label_66)
+        self.lineEditSpkId = QLineEdit(self.groupBox_2)
+        self.lineEditSpkId.setObjectName(u"lineEditSpkId")
+        self.lineEditSpkId.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.formLayout.setWidget(5, QFormLayout.FieldRole, self.lineEditSpkId)
+
+
         self.verticalLayout_3.addLayout(self.formLayout)
 
         self.label_7 = QLabel(self.groupBox_2)
@@ -247,13 +259,15 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Threshold (dB)", None))
         self.lineEditThreshold.setText(QCoreApplication.translate("MainWindow", u"-40", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Minimum Length (ms)", None))
-        self.lineEditMinLen.setText(QCoreApplication.translate("MainWindow", u"5000", None))
+        self.lineEditMinLen.setText(QCoreApplication.translate("MainWindow", u"8000", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Minimum Interval (ms)", None))
         self.lineEditMinInterval.setText(QCoreApplication.translate("MainWindow", u"300", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hop Size (ms)", None))
         self.lineEditHopSize.setText(QCoreApplication.translate("MainWindow", u"10", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Maximum Silence Length (ms)", None))
         self.lineEditMaxSilence.setText(QCoreApplication.translate("MainWindow", u"1000", None))
+        self.label_66.setText(QCoreApplication.translate("MainWindow", u"Speaker ID", None))
+        self.lineEditSpkId.setText(QCoreApplication.translate("MainWindow", u"100", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Output Directory (default to the same as the audio)", None))
         self.lineEditOutputDir.setText("")
         self.pushButtonBrowse.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))

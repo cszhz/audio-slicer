@@ -37,6 +37,8 @@ class MainWindow(QMainWindow):
         self.ui.lineEditMinInterval.setValidator(validator)
         self.ui.lineEditHopSize.setValidator(validator)
         self.ui.lineEditMaxSilence.setValidator(validator)
+        self.ui.lineEditSpkId.setValidator(validator)
+        
 
         self.ui.listWidgetTaskList.setAlternatingRowColors(True)
 
@@ -138,9 +140,11 @@ class MainWindow(QMainWindow):
                         min_interval=int(
                             self.win.ui.lineEditMinInterval.text()),
                         hop_size=int(self.win.ui.lineEditHopSize.text()),
-                        max_sil_kept=int(self.win.ui.lineEditMaxSilence.text())
+                        max_sil_kept=int(self.win.ui.lineEditMaxSilence.text()),
+                        speaker_id=int(self.win.ui.lineEditSpkId.text())
                     )
                     chunks = slicer.slice(audio)
+                    '''
                     out_dir = self.win.ui.lineEditOutputDir.text()
                     if out_dir == '':
                         out_dir = os.path.dirname(os.path.abspath(filename))
@@ -149,11 +153,22 @@ class MainWindow(QMainWindow):
                         info = QDir(out_dir)
                         if not info.exists():
                             info.mkpath(out_dir)
+                    '''
+
+                    #add libtts format
+                    out_dir = self.win.ui.lineEditOutputDir.text()
+                    speaker_id=int(self.win.ui.lineEditSpkId.text())
+                    fn=os.path.basename(filename)
+                    fn = fn.split(".")[0]
+                    out_dir = os.path.join(out_dir, str(speaker_id), fn)
+                    info = QDir(out_dir)
+                    info.mkpath(out_dir)
 
                     ext = self.win.ui.buttonGroup.checkedButton().text()
                     for i, chunk in enumerate(chunks):
-                        path = os.path.join(out_dir, f'%s_%d.{ext}' % (os.path.basename(filename)
-                                                                       .rsplit('.', maxsplit=1)[0], i))
+                        #path = os.path.join(out_dir, f'%s_%03d.{ext}' % (os.path.basename(filename)
+                        #                                               .rsplit('.', maxsplit=1)[0], i))
+                        path = os.path.join(out_dir, f'%s_%s_%03d.{ext}' % (speaker_id, fn, i))
                         if not is_mono:
                             chunk = chunk.T
                         soundfile.write(path, chunk, sr)
@@ -213,6 +228,7 @@ class MainWindow(QMainWindow):
         self.ui.lineEditMinInterval.setEnabled(enabled)
         self.ui.lineEditHopSize.setEnabled(enabled)
         self.ui.lineEditMaxSilence.setEnabled(enabled)
+        self.ui.lineEditSpkId.setEnabled(enabled)
         self.ui.lineEditOutputDir.setEnabled(enabled)
         self.ui.pushButtonBrowse.setEnabled(enabled)
         self.processing = processing
