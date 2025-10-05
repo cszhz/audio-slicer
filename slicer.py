@@ -43,7 +43,7 @@ class Slicer:
     def __init__(self,
                  sr: int,
                  db_threshold: float = -40,
-                 min_length: int = 5000,
+                 min_length: int = 8000,
                  win_l: int = 300,
                  win_s: int = 20,
                  max_silence_kept: int = 500):
@@ -144,7 +144,7 @@ def main():
     if not os.path.exists(out):
         os.makedirs(out)
     for i, chunk in enumerate(chunks):
-        soundfile.write(os.path.join(out, f'%s_%d.wav' % (os.path.basename(args.audio).rsplit('.', maxsplit=1)[0], i)), chunk, sr)
+        soundfile.write(os.path.join(out, f'%s_%03d.wav' % (os.path.basename(args.audio).rsplit('.', maxsplit=1)[0], i)), chunk, sr)
 
 
 if __name__ == '__main__':

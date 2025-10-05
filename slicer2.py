@@ -46,10 +46,11 @@ class Slicer:
     def __init__(self,
                  sr: int,
                  threshold: float = -40.,
-                 min_length: int = 5000,
+                 min_length: int = 8000,
                  min_interval: int = 300,
                  hop_size: int = 20,
-                 max_sil_kept: int = 5000):
+                 max_sil_kept: int = 5000,
+                 speaker_id: int = 100):
         if not min_length >= min_interval >= hop_size:
             raise ValueError('The following condition must be satisfied: min_length >= min_interval >= hop_size')
         if not max_sil_kept >= hop_size:
@@ -61,6 +62,7 @@ class Slicer:
         self.min_length = round(sr * min_length / 1000 / self.hop_size)
         self.min_interval = round(min_interval / self.hop_size)
         self.max_sil_kept = round(sr * max_sil_kept / 1000 / self.hop_size)
+        self.speaker_id = speaker_id
 
     def _apply_slice(self, waveform, begin, end):
         if len(waveform.shape) > 1:
@@ -154,6 +156,8 @@ def main():
                         help='The minimum milliseconds required for each sliced audio clip')
     parser.add_argument('--min_interval', type=int, required=False, default=300,
                         help='The minimum milliseconds for a silence part to be sliced')
+    parser.add_argument('--speaker_id', type=int, required=False, default=100,
+                        help='Speker ID')
     parser.add_argument('--hop_size', type=int, required=False, default=10,
                         help='Frame length in milliseconds')
     parser.add_argument('--max_sil_kept', type=int, required=False, default=500,
@@ -170,13 +174,14 @@ def main():
         min_length=args.min_length,
         min_interval=args.min_interval,
         hop_size=args.hop_size,
-        max_sil_kept=args.max_sil_kept
+        max_sil_kept=args.max_sil_kept,
+        speaker_id=args.speaker_id
     )
     chunks = slicer.slice(audio)
     if not os.path.exists(out):
         os.makedirs(out)
     for i, chunk in enumerate(chunks):
-        soundfile.write(os.path.join(out, f'%s_%d.wav' % (os.path.basename(args.audio).rsplit('.', maxsplit=1)[0], i)), chunk, sr)
+        soundfile.write(os.path.join(out, f'%s_%03d.wav' % (os.path.basename(args.audio).rsplit('.', maxsplit=1)[0], i)), chunk, sr)
 
 
 if __name__ == '__main__':
